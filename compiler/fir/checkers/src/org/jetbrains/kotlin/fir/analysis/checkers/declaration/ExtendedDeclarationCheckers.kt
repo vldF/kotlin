@@ -5,9 +5,12 @@
 
 package org.jetbrains.kotlin.fir.analysis.checkers.declaration
 
+import org.jetbrains.kotlin.fir.analysis.checkers.extended.RedundantModalityModifierChecker
 import org.jetbrains.kotlin.fir.analysis.checkers.extended.RedundantVisibilityModifierChecker
 
 object ExtendedDeclarationCheckers : DeclarationCheckers() {
     override val declarationCheckers = listOf(RedundantVisibilityModifierChecker, RedundantVisibilityModifierChecker)
+
+    override val memberDeclarationCheckers = listOf(RedundantModalityModifierChecker)
 
 }
