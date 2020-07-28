@@ -34,14 +34,12 @@ abstract class IrPropertyCommonImpl(
     origin: IrDeclarationOrigin,
     override val name: Name,
     override var visibility: Visibility,
-    override val modality: Modality,
     override val isVar: Boolean,
     override val isConst: Boolean,
     override val isLateinit: Boolean,
     override val isDelegated: Boolean,
     override val isExternal: Boolean,
     override val isExpect: Boolean,
-    override val isFakeOverride: Boolean = origin == IrDeclarationOrigin.FAKE_OVERRIDE
 ) : IrDeclarationBase<PropertyCarrier>(startOffset, endOffset, origin),
     IrProperty,
     PropertyCarrier {
@@ -112,18 +110,19 @@ class IrPropertyImpl(
     endOffset: Int,
     origin: IrDeclarationOrigin,
     override val symbol: IrPropertySymbol,
-    override val name: Name,
-    override var visibility: Visibility,
+    name: Name,
+    visibility: Visibility,
     override val modality: Modality,
-    override val isVar: Boolean,
-    override val isConst: Boolean,
-    override val isLateinit: Boolean,
-    override val isDelegated: Boolean,
-    override val isExternal: Boolean,
-    override val isExpect: Boolean = false,
-    override val isFakeOverride: Boolean = origin == IrDeclarationOrigin.FAKE_OVERRIDE
-) : IrPropertyCommonImpl(startOffset, endOffset, origin, name, visibility, modality, isVar, isConst, isLateinit, isDelegated, isExternal, isExpect, isFakeOverride) {
-
+    isVar: Boolean,
+    isConst: Boolean,
+    isLateinit: Boolean,
+    isDelegated: Boolean,
+    isExternal: Boolean,
+    isExpect: Boolean = false,
+    override val isFakeOverride: Boolean = origin == IrDeclarationOrigin.FAKE_OVERRIDE,
+) : IrPropertyCommonImpl(
+    startOffset, endOffset, origin, name, visibility, isVar, isConst, isLateinit, isDelegated, isExternal, isExpect,
+) {
     init {
         symbol.bind(this)
     }
@@ -137,7 +136,7 @@ class IrFakeOverridePropertyImpl(
     endOffset: Int,
     origin: IrDeclarationOrigin,
     name: Name,
-    override var visibility: Visibility,
+    visibility: Visibility,
     override var modality: Modality,
     isVar: Boolean,
     isConst: Boolean,
@@ -145,9 +144,12 @@ class IrFakeOverridePropertyImpl(
     isDelegated: Boolean,
     isExternal: Boolean,
     isExpect: Boolean,
-) : IrPropertyCommonImpl(startOffset, endOffset, origin, name, visibility, modality, isVar, isConst, isLateinit,
-    isDelegated, isExternal, isExpect, isFakeOverride = true)
-{
+) : IrPropertyCommonImpl(
+    startOffset, endOffset, origin, name, visibility, isVar, isConst, isLateinit, isDelegated, isExternal, isExpect,
+), IrFakeOverrideProperty {
+    override val isFakeOverride: Boolean
+        get() = true
+
     private var _symbol: IrPropertySymbol? = null
 
     override val symbol: IrPropertySymbol
@@ -158,7 +160,7 @@ class IrFakeOverridePropertyImpl(
         get() = _symbol?.descriptor ?: WrappedPropertyDescriptor()
 
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun acquireSymbol(symbol: IrPropertySymbol) {
+    override fun acquireSymbol(symbol: IrPropertySymbol) {
         assert(_symbol == null) { "$this already has symbol _symbol" }
         _symbol = symbol
         symbol.bind(this)

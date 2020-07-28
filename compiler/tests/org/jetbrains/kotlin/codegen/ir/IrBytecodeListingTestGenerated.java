@@ -99,6 +99,21 @@ public class IrBytecodeListingTestGenerated extends AbstractIrBytecodeListingTes
         runTest("compiler/testData/codegen/bytecodeListing/lateInitNotNull.kt");
     }
 
+    @TestMetadata("localFunctionInInitBlock.kt")
+    public void testLocalFunctionInInitBlock() throws Exception {
+        runTest("compiler/testData/codegen/bytecodeListing/localFunctionInInitBlock.kt");
+    }
+
+    @TestMetadata("multiClassPartSourceMultipleParts.kt")
+    public void testMultiClassPartSourceMultipleParts() throws Exception {
+        runTest("compiler/testData/codegen/bytecodeListing/multiClassPartSourceMultipleParts.kt");
+    }
+
+    @TestMetadata("multiClassPartSourceSinglePart.kt")
+    public void testMultiClassPartSourceSinglePart() throws Exception {
+        runTest("compiler/testData/codegen/bytecodeListing/multiClassPartSourceSinglePart.kt");
+    }
+
     @TestMetadata("noCollectionStubMethodsInInterface.kt")
     public void testNoCollectionStubMethodsInInterface() throws Exception {
         runTest("compiler/testData/codegen/bytecodeListing/noCollectionStubMethodsInInterface.kt");
@@ -137,6 +152,11 @@ public class IrBytecodeListingTestGenerated extends AbstractIrBytecodeListingTes
     @TestMetadata("privateDefaultSetter.kt")
     public void testPrivateDefaultSetter() throws Exception {
         runTest("compiler/testData/codegen/bytecodeListing/privateDefaultSetter.kt");
+    }
+
+    @TestMetadata("privateNestedClassInInterface.kt")
+    public void testPrivateNestedClassInInterface() throws Exception {
+        runTest("compiler/testData/codegen/bytecodeListing/privateNestedClassInInterface.kt");
     }
 
     @TestMetadata("samAdapterAndInlinedOne.kt")

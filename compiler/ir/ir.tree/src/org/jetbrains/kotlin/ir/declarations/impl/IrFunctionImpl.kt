@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.IrAttributeContainer
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import org.jetbrains.kotlin.ir.declarations.IrFakeOverrideFunction
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.declarations.impl.carriers.FunctionCarrier
 import org.jetbrains.kotlin.ir.descriptors.WrappedSimpleFunctionDescriptor
@@ -26,7 +27,6 @@ abstract class IrFunctionCommonImpl(
     origin: IrDeclarationOrigin,
     name: Name,
     visibility: Visibility,
-    override val modality: Modality,
     returnType: IrType,
     isInline: Boolean,
     isExternal: Boolean,
@@ -35,7 +35,6 @@ abstract class IrFunctionCommonImpl(
     override val isOperator: Boolean,
     override val isInfix: Boolean,
     isExpect: Boolean,
-    override val isFakeOverride: Boolean
 ) :
     IrFunctionBase<FunctionCarrier>(startOffset, endOffset, origin, name, visibility, isInline, isExternal, isExpect, returnType),
     IrSimpleFunction,
@@ -89,17 +88,19 @@ class IrFunctionImpl(
     returnType: IrType,
     isInline: Boolean,
     isExternal: Boolean,
-    override val isTailrec: Boolean,
-    override val isSuspend: Boolean,
-    override val isOperator: Boolean,
+    isTailrec: Boolean,
+    isSuspend: Boolean,
+    isOperator: Boolean,
     isInfix: Boolean,
     isExpect: Boolean,
-    override val isFakeOverride: Boolean = origin == IrDeclarationOrigin.FAKE_OVERRIDE
-) : IrFunctionCommonImpl(startOffset, endOffset, origin, name, visibility, modality, returnType, isInline,
-    isExternal, isTailrec, isSuspend, isOperator, isInfix, isExpect, isFakeOverride) {
-
+    override val isFakeOverride: Boolean = origin == IrDeclarationOrigin.FAKE_OVERRIDE,
+) : IrFunctionCommonImpl(
+    startOffset, endOffset, origin, name, visibility, returnType, isInline,
+    isExternal, isTailrec, isSuspend, isOperator, isInfix, isExpect,
+) {
     @ObsoleteDescriptorBasedAPI
-    override val descriptor: FunctionDescriptor get() = symbol.descriptor
+    override val descriptor: FunctionDescriptor
+        get() = symbol.descriptor
 
     init {
         symbol.bind(this)
@@ -123,11 +124,14 @@ class IrFakeOverrideFunctionImpl(
     isSuspend: Boolean,
     isOperator: Boolean,
     isInfix: Boolean,
-    isExpect: Boolean
-) : IrFunctionCommonImpl(startOffset, endOffset, origin, name, visibility, modality, returnType, isInline,
+    isExpect: Boolean,
+) : IrFunctionCommonImpl(
+    startOffset, endOffset, origin, name, visibility, returnType, isInline,
     isExternal, isTailrec, isSuspend, isOperator, isInfix, isExpect,
-    isFakeOverride = true)
-{
+), IrFakeOverrideFunction {
+    override val isFakeOverride: Boolean
+        get() = true
+
     private var _symbol: IrSimpleFunctionSymbol? = null
 
     override val symbol: IrSimpleFunctionSymbol
@@ -138,7 +142,7 @@ class IrFakeOverrideFunctionImpl(
         get() = _symbol?.descriptor ?: WrappedSimpleFunctionDescriptor()
 
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun acquireSymbol(symbol: IrSimpleFunctionSymbol) {
+    override fun acquireSymbol(symbol: IrSimpleFunctionSymbol) {
         assert(_symbol == null) { "$this already has symbol _symbol" }
         _symbol = symbol
         symbol.bind(this)
