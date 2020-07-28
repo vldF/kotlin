@@ -5,12 +5,7 @@
 
 package org.jetbrains.kotlin.fir.analysis.checkers.expression
 
-import org.jetbrains.kotlin.fir.analysis.checkers.extended.EmptyRangeChecker
-
 object CommonExpressionCheckers : ExpressionCheckers() {
-    override val expressionCheckers: List<FirBasicExpresionChecker> = listOf(
-        EmptyRangeChecker
-    )
     override val qualifiedAccessCheckers: List<FirQualifiedAccessChecker> = listOf(
         FirSuperNotAvailableChecker,
         FirNotASupertypeChecker,
