@@ -1,0 +1,146 @@
+FILE: CanBePrimaryConstructorPropertyChecker.kt
+    public final class Incorrect : R|kotlin/Any| {
+        public constructor(property: R|kotlin/String|, withGetter: R|kotlin/Double|, withSetter: R|kotlin/Int|, differentType: R|kotlin/String|): R|Incorrect| {
+            super<R|kotlin/Any|>()
+        }
+
+        public final val property: R|kotlin/String| = R|<local>/property|
+            public get(): R|kotlin/String|
+
+        public final var withSetter: R|kotlin/Int| = R|<local>/withSetter|
+            public get(): R|kotlin/Int|
+            private set(value: R|kotlin/Int|): R|kotlin/Unit|
+
+        public final val another: R|kotlin/String| = R|<local>/property|
+            public get(): R|kotlin/String|
+
+        public final val fromProperty: R|kotlin/String| = this@R|/Incorrect|.R|/Incorrect.another|
+            public get(): R|kotlin/String|
+
+        public final val withGetter: R|kotlin/Double| = R|<local>/withGetter|
+            public get(): R|kotlin/Double| {
+                ^ Int(2).R|kotlin/Int.times|(this@R|/Incorrect|.F|/Incorrect.withGetter|)
+            }
+
+        public final val differentType: R|kotlin/String?| = R|<local>/differentType|
+            public get(): R|kotlin/String?|
+
+        public constructor(param: R|kotlin/Int|): R|Incorrect| {
+            this<R|Incorrect|>(String(), Double(0.0), R|<local>/param|, String())
+            lval local: R|kotlin/Int| = R|<local>/param|
+        }
+
+    }
+    public abstract class X2 : R|kotlin/Any| {
+        public constructor(property: R|kotlin/String|): R|X2| {
+            super<R|kotlin/Any|>()
+        }
+
+        init {
+            R|kotlin/io/print|(R|<local>/property|)
+        }
+
+        public open val property: R|kotlin/String| = R|<local>/property|
+            public get(): R|kotlin/String|
+
+    }
+    public abstract interface Foo : R|kotlin/Any| {
+        public abstract val x: R|kotlin/String|
+            public get(): R|kotlin/String|
+
+    }
+    public open class X : R|kotlin/Any| {
+        public constructor(property: R|kotlin/String|): R|X| {
+            super<R|kotlin/Any|>()
+        }
+
+        init {
+            R|kotlin/io/print|(R|<local>/property|)
+        }
+
+        public open val property: R|kotlin/String| = R|<local>/property|
+            public get(): R|kotlin/String|
+
+    }
+    public final class Bar : R|kotlin/Any| {
+        public constructor(x: R|kotlin/String|): R|Bar| {
+            super<R|kotlin/Any|>()
+        }
+
+        init {
+            object : R|Foo| {
+                private[local] constructor(): R|<anonymous>| {
+                    super<R|kotlin/Any|>()
+                }
+
+                public[local] final override val x: R|kotlin/String| = R|<local>/x|
+                    public get(): R|kotlin/String|
+
+            }
+
+        }
+
+    }
+    public sealed class X3 : R|kotlin/Any| {
+        private constructor(property: R|kotlin/String|): R|X3| {
+            super<R|kotlin/Any|>()
+        }
+
+        init {
+            R|kotlin/io/print|(R|<local>/property|)
+        }
+
+        public open val property: R|kotlin/String| = R|<local>/property|
+            public get(): R|kotlin/String|
+
+    }
+    public open class X4 : R|kotlin/Any| {
+        public constructor(property: R|kotlin/String|): R|X4| {
+            super<R|kotlin/Any|>()
+        }
+
+        init {
+            R|kotlin/io/print|(R|<local>/property|)
+        }
+
+        public final val property: R|kotlin/String| = R|<local>/property|
+            public get(): R|kotlin/String|
+
+    }
+    public final class X5 : R|kotlin/Any| {
+        public constructor(property: R|kotlin/String|): R|X5| {
+            super<R|kotlin/Any|>()
+        }
+
+        init {
+            R|kotlin/io/print|(R|<local>/property|)
+        }
+
+        public open val property: R|kotlin/String| = R|<local>/property|
+            public get(): R|kotlin/String|
+
+    }
+    public open class X6 : R|kotlin/Any| {
+        public constructor(property: R|kotlin/String|): R|X6| {
+            super<R|kotlin/Any|>()
+        }
+
+        public open val property: R|kotlin/String| = R|<local>/property|
+            public get(): R|kotlin/String|
+
+    }
+    public final class Correct : R|kotlin/Any| {
+        public constructor(simple: R|kotlin/String|, withType: R|kotlin/Int|, otherName: R|kotlin/Double|): R|Correct| {
+            super<R|kotlin/Any|>()
+        }
+
+        public final val simple: R|kotlin/String| = R|<local>/simple|
+            public get(): R|kotlin/String|
+
+        public final val withType: R|kotlin/Int| = R|<local>/withType|
+            public get(): R|kotlin/Int|
+
+        public final val anotherName: R|kotlin/Double| = R|<local>/otherName|
+            public get(): R|kotlin/Double|
+
+    }

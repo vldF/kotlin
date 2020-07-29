@@ -28,6 +28,11 @@ public class ExtendedFirDiagnosticsTestGenerated extends AbstractExtendedFirDiag
         KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/fir/analysis-tests/testData/extendedCheckers"), Pattern.compile("^([^.]+)\\.kt$"), null, true);
     }
 
+    @TestMetadata("CanBePrimaryConstructorPropertyChecker.kt")
+    public void testCanBePrimaryConstructorPropertyChecker() throws Exception {
+        runTest("compiler/fir/analysis-tests/testData/extendedCheckers/CanBePrimaryConstructorPropertyChecker.kt");
+    }
+
     @TestMetadata("RedundantExplicitTypeChecker.kt")
     public void testRedundantExplicitTypeChecker() throws Exception {
         runTest("compiler/fir/analysis-tests/testData/extendedCheckers/RedundantExplicitTypeChecker.kt");
