@@ -23,14 +23,14 @@ object FirPropertyInitializationAnalyzer : AbstractFirPropertyInitializationChec
         graph: ControlFlowGraph,
         reporter: DiagnosticReporter,
         data: Map<CFGNode<*>, PropertyInitializationInfo>,
-        properties: Set<FirPropertySymbol>
+        properties: Set<FirPropertySymbol>,
     ) {
         val localData = data.filter {
             val symbolFir = (it.key.fir as? FirVariableSymbol<*>)?.fir
             symbolFir == null || symbolFir.initializer == null && symbolFir.delegate == null
         }
 
-        val localProperties = properties.filter { it.fir.initializer == null && it.fir.delegate == null }.toSet()
+        val localProperties = properties.filter { it.fir.initializer == null && it.fir.delegate == null && it.fir.isLocal }.toSet()
 
         val reporterVisitor = UninitializedPropertyReporter(localData, localProperties, reporter)
         graph.traverse(TraverseDirection.Forward, reporterVisitor)
