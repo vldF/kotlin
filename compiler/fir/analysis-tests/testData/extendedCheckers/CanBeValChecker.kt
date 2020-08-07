@@ -3,18 +3,6 @@
 import kotlin.reflect.KProperty
 import kotlin.properties.Delegates
 
-fun main(args: Array<String?>) {
-    <!CAN_BE_VAL!>var<!> a: String?
-    val <!UNUSED_VARIABLE!>unused<!> = 0
-
-    if (args.size == 1) {
-        <!ASSIGNED_VALUE_IS_NEVER_READ!>a<!> = args[0]
-    } else {
-        a  = args.toString()
-        if (a != null && a.equals("cde")) return
-    }
-}
-
 fun testDelegator() {
     var <!UNUSED_VARIABLE!>x<!>: Boolean by LocalFreezableVar(true)
     var <!UNUSED_VARIABLE!>y<!> by LocalFreezableVar("")
@@ -139,6 +127,18 @@ fun assignedTwice(p: Int) {
     var <!VARIABLE_NEVER_READ!>v<!>: Int
     <!ASSIGNED_VALUE_IS_NEVER_READ!>v<!> = 0
     if (p > 0) <!ASSIGNED_VALUE_IS_NEVER_READ!>v<!> = 1
+}
+
+fun main(args: Array<String?>) {
+    <!CAN_BE_VAL!>var<!> a: String?
+    val <!UNUSED_VARIABLE!>unused<!> = 0
+
+    if (args.size == 1) {
+        <!ASSIGNED_VALUE_IS_NEVER_READ!>a<!> = args[0]
+    } else {
+        a  = args.toString()
+        if (a != null && a.equals("cde")) return
+    }
 }
 
 fun run(f: () -> Unit) = f()

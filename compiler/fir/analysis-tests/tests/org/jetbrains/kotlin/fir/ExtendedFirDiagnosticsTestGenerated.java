@@ -33,6 +33,11 @@ public class ExtendedFirDiagnosticsTestGenerated extends AbstractExtendedFirDiag
         runTest("compiler/fir/analysis-tests/testData/extendedCheckers/ArrayEqualityCanBeReplacedWithEquals.kt");
     }
 
+    @TestMetadata("CanBeValChecker.kt")
+    public void testCanBeValChecker() throws Exception {
+        runTest("compiler/fir/analysis-tests/testData/extendedCheckers/CanBeValChecker.kt");
+    }
+
     @TestMetadata("RedundantExplicitTypeChecker.kt")
     public void testRedundantExplicitTypeChecker() throws Exception {
         runTest("compiler/fir/analysis-tests/testData/extendedCheckers/RedundantExplicitTypeChecker.kt");
@@ -61,11 +66,6 @@ public class ExtendedFirDiagnosticsTestGenerated extends AbstractExtendedFirDiag
     @TestMetadata("RedundantVisibilityModifierChecker.kt")
     public void testRedundantVisibilityModifierChecker() throws Exception {
         runTest("compiler/fir/analysis-tests/testData/extendedCheckers/RedundantVisibilityModifierChecker.kt");
-    }
-
-    @TestMetadata("VariableAssignmentChecker.kt")
-    public void testVariableAssignmentChecker() throws Exception {
-        runTest("compiler/fir/analysis-tests/testData/extendedCheckers/VariableAssignmentChecker.kt");
     }
 
     @TestMetadata("compiler/fir/analysis-tests/testData/extendedCheckers/canBeReplacedWithOperatorAssignment")

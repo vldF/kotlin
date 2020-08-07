@@ -135,9 +135,6 @@ object RedundantVisibilityModifierChecker : FirBasicDeclarationChecker() {
             }
         }
 
-    private val FirModifier<*>.isVisibilityModifier
-        get() = this.token.toVisibilityOrNull() != null
-
     private fun List<FirLightModifier>.visibilityOrNull() =
         firstOrNull { it.token.toVisibilityOrNull() != null }?.token?.toVisibilityOrNull()
 
