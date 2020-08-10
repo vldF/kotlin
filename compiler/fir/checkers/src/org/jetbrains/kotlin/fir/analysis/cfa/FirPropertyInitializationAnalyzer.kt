@@ -18,13 +18,14 @@ import org.jetbrains.kotlin.fir.resolve.dfa.cfg.QualifiedAccessNode
 import org.jetbrains.kotlin.fir.symbols.impl.FirPropertySymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirVariableSymbol
 
-object FirPropertyInitializationAnalyzer : AbstractFirPropertyInitializationChecker() {
+object FirPropertyInitializationAnalyzer : AbstractFirCfaPropertyAssignmentChecker() {
     override fun analyze(
         graph: ControlFlowGraph,
         reporter: DiagnosticReporter,
         data: Map<CFGNode<*>, PropertyInitializationInfo>,
         properties: Set<FirPropertySymbol>,
     ) {
+        // getting symbols of properties without initializers and non-variable symbols
         val localData = data.filter {
             val symbolFir = (it.key.fir as? FirVariableSymbol<*>)?.fir
             symbolFir == null || symbolFir.initializer == null && symbolFir.delegate == null
