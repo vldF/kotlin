@@ -1,3 +1,10 @@
+<!REDECLARATION!><!REDUNDANT_VISIBILITY_MODIFIER!>public<!> class C {
+    <!REDUNDANT_VISIBILITY_MODIFIER!>public<!> val foo: Int = 0
+
+    <!REDUNDANT_VISIBILITY_MODIFIER!>public<!> fun bar() {}
+
+}<!>
+
 fun f() {
     <!REDUNDANT_VISIBILITY_MODIFIER!>public<!> <!CAN_BE_VAL!>var<!> <!UNUSED_VARIABLE!>baz<!> = 0
     class LocalClass {
@@ -25,13 +32,6 @@ class Foo2<
 
     internal inner class B<T,T2,>
 }
-
-<!REDECLARATION!><!REDUNDANT_VISIBILITY_MODIFIER!>public<!> class C {
-    <!REDUNDANT_VISIBILITY_MODIFIER!>public<!> val foo: Int = 0
-
-    <!REDUNDANT_VISIBILITY_MODIFIER!>public<!> fun bar() {}
-
-}<!>
 
 open class D {
     protected open fun willRemainProtected() {
