@@ -52,6 +52,7 @@ object UnusedChecker : FirControlFlowChecker() {
 
         override fun visitVariableDeclarationNode(node: VariableDeclarationNode) {
             val variableSymbol = node.fir.symbol
+            if (variableSymbol.isLoopIterator) return
             val data = data[node]?.get(variableSymbol) ?: return
 
             when {
@@ -122,6 +123,7 @@ object UnusedChecker : FirControlFlowChecker() {
         private val localProperties: Set<FirPropertySymbol>
     ) : ControlFlowGraphVisitor<VariableStatusInfo, Collection<VariableStatusInfo>>() {
         fun getData(graph: ControlFlowGraph): Map<CFGNode<*>, VariableStatusInfo> {
+            println("getting data for local properties set ${localProperties.joinToString()}")
             return graph.collectDataForNode(TraverseDirection.Backward, VariableStatusInfo.EMPTY, this)
         }
 
@@ -160,7 +162,6 @@ object UnusedChecker : FirControlFlowChecker() {
 
         override fun visitVariableAssignmentNode(node: VariableAssignmentNode, data: Collection<VariableStatusInfo>): VariableStatusInfo {
             val dataForNode = visitNode(node, data)
-            if (node.fir.source?.kind is FirFakeSourceElementKind) return dataForNode
             val reference = node.fir.lValue as? FirResolvedNamedReference ?: return dataForNode
             val symbol = reference.resolvedSymbol as? FirPropertySymbol ?: return dataForNode
             val toPut = when {
@@ -197,6 +198,9 @@ object UnusedChecker : FirControlFlowChecker() {
             return dataForNode.put(symbol, status)
         }
     }
+
+    private val FirPropertySymbol.isLoopIterator
+        get() = fir.initializer?.source?.kind == FirFakeSourceElementKind.DesugaredForLoop
 
     private val FirPropertySymbol.identifierSource: FirSourceElement?
         get() = fir.source?.getChildren(KtTokens.IDENTIFIER, 0, 1)
