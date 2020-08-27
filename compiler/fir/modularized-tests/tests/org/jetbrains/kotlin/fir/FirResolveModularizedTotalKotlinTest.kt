@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.fir.analysis.FirCheckersResolveProcessor
+import org.jetbrains.kotlin.fir.analysis.registerExtendedCheckersComponent
 import org.jetbrains.kotlin.fir.builder.RawFirBuilder
 import org.jetbrains.kotlin.fir.declarations.FirFile
 import org.jetbrains.kotlin.fir.dump.MultiModuleHtmlFirDump
@@ -45,6 +46,7 @@ internal val PASSES = System.getProperty("fir.bench.passes")?.toInt() ?: 3
 internal val SEPARATE_PASS_DUMP = System.getProperty("fir.bench.dump.separate_pass", "false").toBooleanLenient()!!
 private val APPEND_ERROR_REPORTS = System.getProperty("fir.bench.report.errors.append", "false").toBooleanLenient()!!
 private val RUN_CHECKERS = System.getProperty("fir.bench.run.checkers", "false").toBooleanLenient()!!
+private val RUN_EXTENDED_CHECKERS = System.getProperty("fir.bench.run.checkers.extended", "false").toBooleanLenient()!!
 private val USE_LIGHT_TREE = System.getProperty("fir.bench.use.light.tree", "false").toBooleanLenient()!!
 private val DUMP_MEMORY = System.getProperty("fir.bench.dump.memory", "false").toBooleanLenient()!!
 
@@ -105,6 +107,10 @@ class FirResolveModularizedTotalKotlinTest : AbstractModularizedTest() {
             } else {
                 it
             }
+        }
+
+        if (RUN_EXTENDED_CHECKERS) {
+            session.registerExtendedCheckersComponent()
         }
 
         val firProvider = session.firProvider as FirProviderImpl
