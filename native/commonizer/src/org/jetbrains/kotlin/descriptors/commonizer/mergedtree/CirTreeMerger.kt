@@ -12,8 +12,6 @@ import org.jetbrains.kotlin.descriptors.commonizer.CommonizerParameters
 import org.jetbrains.kotlin.descriptors.commonizer.TargetProvider
 import org.jetbrains.kotlin.descriptors.commonizer.cir.CirClass
 import org.jetbrains.kotlin.descriptors.commonizer.cir.factory.*
-import org.jetbrains.kotlin.descriptors.commonizer.utils.intern
-import org.jetbrains.kotlin.descriptors.commonizer.utils.internedClassId
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name

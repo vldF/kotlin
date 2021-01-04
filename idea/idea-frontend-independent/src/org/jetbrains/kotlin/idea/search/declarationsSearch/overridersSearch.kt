@@ -10,7 +10,6 @@ import com.intellij.psi.search.SearchScope
 import com.intellij.psi.search.searches.AllOverridingMethodsSearch
 import com.intellij.psi.search.searches.DirectClassInheritorsSearch
 import com.intellij.psi.search.searches.FunctionalExpressionSearch
-import com.intellij.psi.search.searches.OverridingMethodsSearch
 import com.intellij.psi.util.MethodSignatureUtil
 import com.intellij.psi.util.PsiUtil
 import com.intellij.psi.util.TypeConversionUtil
@@ -31,7 +30,6 @@ import org.jetbrains.kotlin.idea.search.allScope
 import org.jetbrains.kotlin.idea.search.excludeKotlinSources
 import org.jetbrains.kotlin.idea.util.application.runReadAction
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import java.util.*
 
 fun PsiElement.isOverridableElement(): Boolean = when (this) {

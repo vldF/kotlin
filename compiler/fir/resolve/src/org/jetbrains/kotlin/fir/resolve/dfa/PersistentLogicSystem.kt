@@ -11,7 +11,6 @@ import org.jetbrains.kotlin.fir.types.ConeInferenceContext
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
 import org.jetbrains.kotlin.utils.addIfNotNull
 import java.util.*
-import kotlin.NoSuchElementException
 
 data class PersistentTypeStatement(
     override val variable: RealVariable,
