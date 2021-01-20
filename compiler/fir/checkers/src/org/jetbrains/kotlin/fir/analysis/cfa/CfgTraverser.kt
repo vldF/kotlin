@@ -6,8 +6,6 @@
 package org.jetbrains.kotlin.fir.analysis.cfa
 
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.*
-import org.jetbrains.kotlin.fir.symbols.AbstractFirBasedSymbol
-import org.jetbrains.kotlin.fir.symbols.impl.FirNamedFunctionSymbol
 
 // ------------------------------ Graph Traversal ------------------------------
 
@@ -18,16 +16,11 @@ enum class TraverseDirection {
 fun <D> ControlFlowGraph.traverse(
     direction: TraverseDirection,
     visitor: ControlFlowGraphVisitor<*, D>,
-    data: D,
-    visitedSymbols: List<AbstractFirBasedSymbol<*>> = listOf()
+    data: D
 ) {
     for (node in getNodesInOrder(direction)) {
         node.accept(visitor, data)
         (node as? CFGNodeWithCfgOwner<*>)?.subGraphs?.forEach { it.traverse(direction, visitor, data) }
-
-        if ((node is FunctionCallNode || node is QualifiedAccessNode) && visitor is InterproceduralVisitorVoid) {
-            visitor.onNestedCall(direction, visitedSymbols, node)
-        }
     }
 }
 
@@ -57,14 +50,12 @@ fun <I : ControlFlowInfo<I, K, V>, K : Any, V : Any> ControlFlowGraph.collectDat
     return nodeMap
 }
 
-internal fun <I : ControlFlowInfo<I, K, V>, K : Any, V : Any> ControlFlowGraph.collectDataForNodeInternal(
+private fun <I : ControlFlowInfo<I, K, V>, K : Any, V : Any> ControlFlowGraph.collectDataForNodeInternal(
     direction: TraverseDirection,
     initialInfo: I,
     visitor: ControlFlowGraphVisitor<I, Collection<Pair<EdgeLabel, I>>>,
     nodeMap: MutableMap<CFGNode<*>, I>,
-    changed: MutableMap<CFGNode<*>, Boolean>,
-    functionsWhitelist: Collection<FirNamedFunctionSymbol> = listOf(),
-    visitedSymbols: Collection<AbstractFirBasedSymbol<*>> = listOf()
+    changed: MutableMap<CFGNode<*>, Boolean>
 ) {
     val nodes = getNodesInOrder(direction)
     for (node in nodes) {
@@ -92,21 +83,6 @@ internal fun <I : ControlFlowInfo<I, K, V>, K : Any, V : Any> ControlFlowGraph.c
         if (hasChanged) {
             nodeMap[node] = newData
         }
-
-        // if this node is call node, onNestingCall is calling
-        if ((node is FunctionCallNode || node is QualifiedAccessNode) && visitor is InterproceduralVisitor<*, *>) {
-            (visitor as? InterproceduralVisitor<I, I>)
-                ?.onFunctionCall(
-                    direction,
-                    initialInfo,
-                    nodeMap,
-                    changed,
-                    functionsWhitelist,
-                    visitedSymbols,
-                    node
-                )
-        }
-
         if (direction == TraverseDirection.Forward && node is CFGNodeWithCfgOwner<*>) {
             node.subGraphs.forEach { it.collectDataForNodeInternal(direction, initialInfo, visitor, nodeMap, changed) }
         }

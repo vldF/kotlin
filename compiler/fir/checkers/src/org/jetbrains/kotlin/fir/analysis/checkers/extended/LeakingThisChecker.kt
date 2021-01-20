@@ -46,10 +46,11 @@ object LeakingThisChecker : FirClassChecker() {
         private val functionsWhitelist: List<FirNamedFunctionSymbol>
     ) : InterproceduralVisitor<PathAwarePropertyUsageInfo, PropertyUsageInfo>() {
         fun getData(graph: ControlFlowGraph): Map<CFGNode<*>, PathAwarePropertyUsageInfo> {
-            return graph.collectDataForNode(
+            return graph.collectDataForNodeInterprocedural(
                 TraverseDirection.Forward,
                 PathAwarePropertyUsageInfo.EMPTY,
-                this, // todo: Add whitelist
+                this,
+                functionsWhitelist
             )
         }
 

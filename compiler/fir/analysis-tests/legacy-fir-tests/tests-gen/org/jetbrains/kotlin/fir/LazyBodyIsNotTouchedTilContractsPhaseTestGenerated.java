@@ -1919,11 +1919,6 @@ public class LazyBodyIsNotTouchedTilContractsPhaseTestGenerated extends Abstract
             public void testRecursion() throws Exception {
                 runTest("compiler/fir/analysis-tests/testData/resolve/extendedCheckers/LeakingThis/Recursion.kt");
             }
-
-            @TestMetadata("useOfPropertiesWithPrimary.kt")
-            public void testUseOfPropertiesWithPrimary() throws Exception {
-                runTest("compiler/fir/analysis-tests/testData/resolve/extendedCheckers/LeakingThis/useOfPropertiesWithPrimary.kt");
-            }
         }
 
         @TestMetadata("compiler/fir/analysis-tests/testData/resolve/extendedCheckers/RedundantCallOfConversionMethod")

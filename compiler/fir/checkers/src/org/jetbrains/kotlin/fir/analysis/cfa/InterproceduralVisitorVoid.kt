@@ -24,7 +24,7 @@ abstract class InterproceduralVisitorVoid : ControlFlowGraphVisitorVoid() {
             if (functionSymbol in visitedSymbols) return
             val functionCfg = functionSymbol.fir.controlFlowGraphReference?.controlFlowGraph ?: return
 
-            functionCfg.traverse(direction, this, null, visitedSymbols + functionSymbol)
+            functionCfg.traverseInterprocedural(direction, this, visitedSymbols + functionSymbol)
         } else if (node is QualifiedAccessNode) {
             val property = node.fir.calleeReference.resolvedSymbol?.fir as? FirProperty
             val propertySymbol = property?.symbol as? AbstractFirBasedSymbol<*>
@@ -33,12 +33,12 @@ abstract class InterproceduralVisitorVoid : ControlFlowGraphVisitorVoid() {
             property?.setter?.let {
                 val setterCfg = it.symbol.fir.controlFlowGraphReference?.controlFlowGraph ?: return@let
                 propertySymbol ?: return@let
-                setterCfg.traverse(direction, this, null, visitedSymbols + propertySymbol)
+                setterCfg.traverseInterprocedural(direction, this, visitedSymbols + propertySymbol)
             }
             property?.getter?.let {
                 val getterCfg = it.symbol.fir.controlFlowGraphReference?.controlFlowGraph ?: return@let
                 propertySymbol ?: return@let
-                getterCfg.traverse(direction, this, null, visitedSymbols + propertySymbol)
+                getterCfg.traverseInterprocedural(direction, this, visitedSymbols + propertySymbol)
             }
         }
     }
