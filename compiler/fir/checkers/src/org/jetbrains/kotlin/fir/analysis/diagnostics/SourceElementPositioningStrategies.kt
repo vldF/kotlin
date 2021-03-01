@@ -162,4 +162,9 @@ object SourceElementPositioningStrategies {
         LightTreePositioningStrategies.ARRAY_ACCESS,
         PositioningStrategies.ARRAY_ACCESS
     )
+
+    val ASSIGNMENT_VALUE = SourceElementPositioningStrategy(
+        LightTreePositioningStrategies.ASSIGNMENT_VALUE,
+        PositioningStrategies.ASSIGNMENT_VALUE
+    )
 }
